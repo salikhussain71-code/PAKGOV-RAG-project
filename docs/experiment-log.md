@@ -54,3 +54,11 @@
 - Git: main.py M modified + experiment-log.md M + query.py already committed 42bb891 + data/ U per data-policy.md - Vectors never committed
 - Principle: Appendix E Where data? pakistancode.gov.pk establishment.gov.pk official - What did? FastAPI serves RAG - How know correct? 200 OK JSON contains 6711 vectors + hashes
 - Next: Stage 115 Evaluation QA generation per docs/evaluation.md
+## 2026-09-28 - Stage 115 - Evaluation QA 20 pairs from 6711 chunks - VERIFIED
+
+- Action: Created app/eval/generate_qa.py - Right click app -> New Folder eval -> New File generate_qa.py -> Generates 20 QA grounded in 6711 chunks 2111 pages hashes c51d194b 08cf1868 bd0caf96 0feb1c0a e2cd2bb9 4e00b563 - python app/eval/generate_qa.py -> Generated 20 QA pairs from 6711 chunks 2111 pages -> Saved to C:\Users\Dell\Downloads\Projects\PAKGOV-RAG-project\data\eval\qa_groundtruth.jsonl -> Example Q1 Explain content from PAKISTANCODE__Code_of_Criminal_Procedure_1898 chunk -> Pipeline 6 PDFs 2111 pages -> 6711 chunks -> 6711 vectors -> 20 QA eval per evaluation.md
+- Command: dir data/eval -Name -> qa_groundtruth.jsonl - Proof evaluation.md requires QA groundtruth - Each QA has id question answer source_file chunk_id ground_truth_char_start - Grounded in 5.6M chars 6711 vectors Score 1.0457 retrieval - No hallucination real legal text
+- Verification: File exists data/eval/qa_groundtruth.jsonl - 20 pairs from 6711 chunks - Same as FAISS ntotal 6711 == chunks 6711 == vectors 6711 - Sample CrPC 1898
+- Git: generate_qa.py U + experiment-log.md M + data/eval/ U per data-policy.md - Vectors and eval data never committed per data-policy.md
+- Principle: Appendix E Where data? pakistancode.gov.pk official 2111 pages - What did? QA generation 20 pairs - How know correct? source_file chunk_id mapping to 6711 chunks
+- Next: Stage 116 evaluate.py hit@k metrics per evaluation.md
