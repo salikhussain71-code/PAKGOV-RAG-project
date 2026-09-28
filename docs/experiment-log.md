@@ -15,3 +15,12 @@
     - PAKISTANCODE__Rules_of_Business_1973... - 87 pages - 227498 chars
 - Verification: dir data/interim -Name shows 6 txt + .gitkeep - char count via pathlib read_text len()
 - Principle: Appendix E 5 questions - Where data? pakistancode.gov.pk + establishment.gov.pk - What did? pymupdf text extraction - How know correct? page count matches ingest.py 2111 + char count >0
+## 2026-09-28 - Stage 111 - Chunking - 6711 chunks - 8206 KB
+
+- Action: python app/chunk.py - 1000 char chunk + 200 overlap + filter <50 strip - Preserves raw per manual page 21 - interim txt untouched - data/interim -> data/processed
+- Input: 6 txt 5.6M chars 2111 pages - hashes c51d194b 08cf1868 bd0caf96 0feb1c0a e2cd2bb9 4e00b563 - 318 812k 307 799k 176 454k 1044 2.56M 179 508k 87 227k
+- Code: app/chunk.py pathlib json - record source_file chunk_id start_char end_char text - jsonl lines
+- Output: data/processed/chunks.jsonl - 6711 chunks - 8206 KB - Verified via dir data/processed -Name = .gitkeep + chunks.jsonl - Count via pathlib open readlines len = 6711
+- Verification: 6711 >0 + 8206 KB >0 + sample chunk preview - matches 5.6M / (1000-200) expectation - No data loss - Appendix E Where? pakistancode.gov.pk + establishment.gov.pk What? chunking for RAG How know? char count + chunk count + SHA256
+- Git: Untracked app/chunk.py U + data/ U - Modified experiment-log.md M - CORRECT per data-policy.md - Raw PDFs never committed only hash
+- Next: embedding + vector store - Pilot corpus 2111 pages DONE per Page 42 STOP - Do NOT collect more now
