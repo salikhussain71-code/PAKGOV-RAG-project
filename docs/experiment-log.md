@@ -46,3 +46,11 @@
 - Verification: L2 score lowest best 1.0457 < 1.0665 ranking correct - source_file Constitution 176 pages - chunk_id mapping id_to_chunk.json - FAISS ntotal 6711 == chunks 6711 == vectors 6711 - No hallucination real legal text
 - Principle: Appendix E Where data? pakistancode.gov.pk official + SHA256 bd0caf96 - What did? semantic retrieval - How know correct? fundamental rights Articles 12-17 retrieved
 - Git: query.py U + experiment-log.md M - data/ U per data-policy.md - Professional
+## 2026-09-28 - Stage 114 - FastAPI LIVE 200 OK - VERIFIED
+
+- Action: python -m pip install fastapi uvicorn --quiet complete - python -m uvicorn app.api.main:app --reload --port 8000 -> Will watch for changes ['C:\Users\Dell\Downloads\Projects\PAKGOV-RAG-project'] - Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) - Started reloader process [18052] using StatReload - Loading weights 100% 103/103 47.81it/s - Started server process [9580] - Waiting for application startup - Application startup complete - 200 OK GET / HTTP/1.1 - 404 favicon.ico normal - Ctrl+C Shutting down shutdown complete KeyboardInterrupt Stopping reloader 18052 - Back to PS prompt
+- Output: Browser http://127.0.0.1:8000/ returns {"status":"PAKGOV RAG ready","vectors":6711,"chunks":6711,"pages":2111,"Hashes":["c51d194b","08cf1868","bd0caf96","0feb1c0a","e2cd2bb9","4e00b563"]} - Proof pipeline 6 PDFs 2111 pages -> 5.6M chars 812k 799k 454k 2.56M 508k 227k -> 6711 chunks 8206 KB -> 6711 vectors 384 dim 90.9MB 210 batches 25min -> Score 1.0457 Articles 12-17 -> FastAPI 200 OK
+- Verification: GET / 200 OK serves 6711 vectors + 6 hashes matches 6 PDFs SHA256 - Same as Stage 112 6711 vectors + Stage 113 Score 1.0457 - Real server evidence
+- Git: main.py M modified + experiment-log.md M + query.py already committed 42bb891 + data/ U per data-policy.md - Vectors never committed
+- Principle: Appendix E Where data? pakistancode.gov.pk establishment.gov.pk official - What did? FastAPI serves RAG - How know correct? 200 OK JSON contains 6711 vectors + hashes
+- Next: Stage 115 Evaluation QA generation per docs/evaluation.md
