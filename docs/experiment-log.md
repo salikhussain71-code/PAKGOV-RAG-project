@@ -39,3 +39,10 @@
 - Git: Untracked app/embed.py U + data/processed/faiss_index/ U - Modified experiment-log.md M - CORRECT per data-policy.md - Vectors never committed
 - Principle: Appendix E - Where data? Official + Where embedding? HuggingFace all-MiniLM-L6-v2 90.9MB - What did? embedding for retrieval - How know correct? 6711 vectors + shape + dir check
 - Next: RAG QA - app/api + app/demo retrieval
+## 2026-09-28 - Stage 113 - RAG Retrieval query.py - 3 chunks retrieved from 6711 vectors - VERIFIED
+
+- Action: python app/api/query.py - Loading index data/processed/faiss_index/index.faiss - all-MiniLM-L6-v2 weights 103/103 - Query Constitution fundamental rights - Retrieved 3 chunks
+- Output: Score 1.0457 | PAKISTANCODE__Constitution_of_Pakistan__2026-09-26__EN__Under_Review.txt | _1 - Text: Page 2 of 176 12 Protection against retrospective punishment 13 double punishment self-incrimination 14 dignity 15 movement 16 assembly 17 associa - Matches SRC-0001 176 pages bd0caf96 - Score 1.0458 _498 expression belief faith worship association minorities - Score 1.0665 _46 19A Right to information - Done 3 chunks from 6711 vectors
+- Verification: L2 score lowest best 1.0457 < 1.0665 ranking correct - source_file Constitution 176 pages - chunk_id mapping id_to_chunk.json - FAISS ntotal 6711 == chunks 6711 == vectors 6711 - No hallucination real legal text
+- Principle: Appendix E Where data? pakistancode.gov.pk official + SHA256 bd0caf96 - What did? semantic retrieval - How know correct? fundamental rights Articles 12-17 retrieved
+- Git: query.py U + experiment-log.md M - data/ U per data-policy.md - Professional
