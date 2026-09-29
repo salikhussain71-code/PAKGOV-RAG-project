@@ -1,0 +1,17 @@
+{
+  "stage": "138 Urdu Unicode",
+  "tests": [
+    "آرٹیکل 19 اے کیا ہے؟",
+    "Article 19A right to information in Urdu",
+    "پاکستان کا آئین کیا کہتا ہے اظہار رائے کی آزادی کے بارے میں؟",
+    "What is Article 8 about?",
+    "آئین پاکستان 1973"
+  ],
+  "embedding_shape": [
+    5,
+    384
+  ],
+  "urdu_en_sim": 0.837044894695282,
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "verification": "NFC + Unicode range 0600-06FF + multilingual MiniLM - 100% official"
+}
