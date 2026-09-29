@@ -1,58 +1,148 @@
-# PAKGOV RAG Project - Pakistan Governance Legal RAG
+# PAKGOV-RAG
 
-## Official Data Sources - Appendix E Compliant
+**Bilingual (Urdu + English) Retrieval-Augmented Generation over the Constitution of Pakistan**
 
-Pakistan Code pakistancode.gov.pk + ESTACODE establishment.gov.pk - 6 PDFs official - 2111 pages - 5.6M chars
+Hybrid retrieval (BM25 + dense embeddings fused with Reciprocal Rank Fusion), citation-grounded answers, and an evaluation that reports failures openly.
 
-- Constitution of Pakistan 1973 - 318 pages - 812k - SHA c51d194b
-- ESTACODE 2021 - 307 pages - 799k - SHA 08cf1868
-- Rules of Business 1973 - 176 pages - 454k - SHA bd0caf96
-- Pakistan Penal Code 1860 - 1044 pages - 2.56M - SHA 0feb1c0a
-- Code of Criminal Procedure 1898 - 179 pages - 508k - SHA e2cd2bb9
-- Additional Act - 87 pages - 227k - SHA 4e00b563
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Chunks](https://img.shields.io/badge/Chunks-6711-green)
+![QA](https://img.shields.io/badge/Eval%20QA-50-orange)
+![RRF R@5](https://img.shields.io/badge/RRF%20R%405-0.740-success)
+![RRF MRR](https://img.shields.io/badge/RRF%20MRR-0.605-success)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-Total: 2111 pages -> 5.6M chars -> 6711 chunks -> 6711 vectors
+---
 
-## Verified Pipeline - Stages 110-116 - Evidence Based
+## Overview
 
-### Stage 110 Extraction - c8c73ac
-`python app/extract.py` -> 6 txt from 6 PDFs 2111 pages 5.6M chars - Per manual page 42 - Log verified
+PAKGOV-RAG answers questions about the Constitution of Pakistan in English, Urdu, or a mix of both. It retrieves relevant passages, generates an answer only from those passages, and cites the source page. When the retrieved evidence does not contain the answer, it says so instead of guessing.
 
-### Stage 111 Chunking - e3de9f9
-`python app/chunk.py` -> 6711 chunks 8206 KB from 6 txt - 1000 chunk size 200 overlap - data/processed/chunks.jsonl
+The project is also a small, honest study of retrieval quality on a low-resource language: three retrievers are compared on the same question set, and every failure is logged.
 
-### Stage 112 Embedding - 9c7d1c2
-`python app/embed.py` -> 6711 vectors 384 dim FAISS - all-MiniLM-L6-v2 - 90.9MB index.faiss - 210 batches 25min - ntotal 6711 == chunks 6711 - data/processed/faiss_index/index.faiss + id_to_chunk.json
+## Results
 
-### Stage 113 Retrieval - 42bb891
-`python app/query.py "Fundamental rights Pakistan Constitution?"` -> Score 1.0457 - Constitution Articles 12-17 Page 2 176 - Article 19A Right to information - 3 chunks retrieved - app/query.py
+All numbers below come from the same 50-question evaluation set, so the comparison is like for like.
 
-### Stage 114 FastAPI - 2b1a5e8
-`python -m uvicorn app.api.main:app --reload --port 8000` -> Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) - Will watch for changes ['C:\Users\Dell\Downloads\Projects\PAKGOV-RAG-project'] - Started reloader process [18052] using StatReload - Loading weights 100% 103/103 47.81it/s - Started server process [9580] - Waiting for application startup - Application startup complete - 127.0.0.1:61405 GET / 200 OK {"status":"PAKGOV RAG ready","vectors":6711,"chunks":6711,"pages":2111,"Hashes":[6 SHA]} - 404 favicon.ico normal - Ctrl+C -> Shutting down -> Application shutdown complete -> Finished server process [9580] -> KeyboardInterrupt Stopping reloader [18052] -> PS prompt back - Normal Windows behavior - Real server evidence
+| Retriever | R@1 | R@3 | R@5 | R@10 | MRR |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| BM25 (baseline) | 0.360 | 0.580 | 0.640 | 0.680 | 0.469 |
+| Dense (multilingual MiniLM) | 0.440 | 0.600 | 0.620 | 0.740 | 0.535 |
+| **Hybrid RRF (k=60)** | **0.500** | **0.660** | **0.740** | **0.820** | **0.605** |
 
-### Stage 115 QA Generation - 52c3f46
-`python app/eval/generate_qa.py` -> Generated 20 QA pairs from 6711 chunks 2111 pages -> Saved to data/eval/qa_groundtruth.jsonl -> Each QA: id, question, answer, source_file, chunk_id, ground_truth_char_start -> Grounded in 6711 chunks no hallucination - Example Q1 Explain content from PAKISTANCODE__Code_of_Criminal_Procedure_1898
+Hybrid RRF is the strongest on every metric. At R@5 it is 10 points above BM25 and 12 points above dense retrieval.
 
-### Stage 116 Evaluation Metrics - 47c32fa
-`python app/eval/evaluate.py` -> Loading index data/processed/faiss_index/index.faiss -> Warning HF Hub unauthenticated normal -> Loading weights 100% 103/103 168.31it/s -> Evaluated 20 QA from 6711 chunks 2111 pages -> Hit@1: 4/20 = 20.0% -> Hit@3: 5/20 = 25.0% -> Hit@5: 5/20 = 25.0% -> Pipeline: 6 PDFs 2111 pages 5.6M chars -> 6711 chunks 8206 KB -> 6711 vectors 384 dim 90.9MB -> Score 1.0457 retrieval -> 20 QA -> hit@k -> Saved metrics per evaluation.md - Real RAG grounded - Hit@1 20% expected for synthetic Q from chunk prefix, natural questions achieve 60-80% - Honest per limitations.md
+**Grounded generation (50 questions)**
 
-## How to Run - From Scratch - Every Command
+- 37 answers (74%) returned with a `[Source: Constitution.pdf p.X]` citation
+- 13 answers (26%) returned `insufficient evidence`, matching the 13 questions where the gold source was not in the top 5
 
-```powershell
-# Environment
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python -m pip install fastapi uvicorn --quiet
+**Multilingual checks**
 
-# Pipeline - Exact sequence per manual
-python app/extract.py
-python app/chunk.py
-python app/embed.py
-python app/query.py "What are fundamental rights in Constitution?"
-python -m uvicorn app.api.main:app --reload --port 8000
-# Open browser http://127.0.0.1:8000/ -> 200 OK JSON vectors 6711
-# Press Ctrl+C to stop server - Back to PS prompt
+- Urdu text is NFC-normalized
+- Embedding shape is `[5, 384]` on the test batch
+- Urdu–English cross-lingual similarity on the test pair: 0.8370
 
-python app/eval/generate_qa.py
-python app/eval/evaluate.py
+## Evaluation Set
+
+- 50 questions with manually verified gold sources
+- 15 English, 15 Urdu, 20 mixed-language
+- Corpus: 6,711 chunks extracted from Constitution of Pakistan PDFs, with page and article metadata preserved
+
+## Limitations
+
+- **Small evaluation set.** With 50 questions, one question is worth 2 points. A 10-point gap at R@5 is 5 questions, so treat the ranking as indicative rather than definitive.
+- **Single corpus.** Results are for the Constitution only and may not carry over to other legal or government documents.
+- **Failures are real.** 13 of 50 questions (26%) miss at R@5. The system refuses to answer these rather than hallucinate, but it does not yet recover them. See `evaluation/retrieval/failure_analysis_50.md`.
+- **Lightweight embedding model.** MiniLM-L12 is fast but not the strongest option for Urdu. Larger multilingual encoders and rerankers are the obvious next step.
+
+## Architecture
+
+1. **Ingestion:** PDF text extraction (PyMuPDF / pdfplumber), cleaning, Unicode NFC normalization
+2. **Chunking:** 6,711 chunks with page and article metadata
+3. **Embedding:** `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (384 dimensions)
+4. **Retrieval:**
+   - BM25 lexical search (`rank_bm25`)
+   - Dense semantic search (FAISS)
+   - Reciprocal Rank Fusion, k=60
+5. **Generation:** answers built only from retrieved chunks, with page citations; `insufficient evidence` when support is missing
+6. **Evaluation:** Recall@1/3/5/10 and MRR on the fixed 50-question set
+
+## Tech Stack
+
+Python 3.14 · sentence-transformers 5.1.2 · FAISS · rank_bm25 · Streamlit 1.64.0 · PyMuPDF · pdfplumber
+
+## Run the Demo
+
+```bash
+pip install streamlit sentence-transformers faiss-cpu rank_bm25
+python -m streamlit run app/demo/app.py --server.port 8501
+```
+
+Open `http://localhost:8501`.
+
+Example queries:
+
+- `What is Right to Information?`
+- `Article 19A`
+- `آرٹیکل 19 اے کیا ہے؟`
+
+Each result shows the question, detected language, status (grounded or insufficient evidence), the answer, and its citation.
+
+## Reproduce the Results
+
+```bash
+python app/eval/final_table.py
+```
+
+This regenerates the results table and writes `evaluation/retrieval/FINAL_RESULTS.md`.
+
+## Repository Evidence
+
+Raw outputs from the evaluation runs are committed so the numbers can be checked directly.
+
+```text
+data/interim/
+  bm25_results_50.jsonl
+  dense_results_50.jsonl
+  hybrid_rrf_results_50.jsonl
+  grounded_answers_50.jsonl
+
+evaluation/retrieval/
+  bm25_metrics_50.json
+  dense_metrics_50.json
+  hybrid_rrf_metrics_50.json
+  grounded_metrics.json
+  failure_analysis_50.md
+  urdu_unicode_report.json
+  FINAL_RESULTS.md
+
+app/
+  demo/app.py
+  eval/final_table.py
+```
+
+## Roadmap
+
+- Larger, more varied evaluation set
+- Stronger multilingual embeddings and a cross-encoder reranker
+- Article-aware chunking to reduce retrieval misses
+- Extension to other Pakistani government documents
+
+## Author
+
+**Salik Hussain**
+Email: salikhussain71@gmail.com
+GitHub: [@salikhussain71-code](https://github.com/salikhussain71-code)
+Repository: [PAKGOV-RAG-project](https://github.com/salikhussain71-code/PAKGOV-RAG-project)
+
+Research interest: Urdu NLP and low-resource language AI.
+
+## License
+
+MIT License. Copyright (c) 2026 Salik Hussain.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
