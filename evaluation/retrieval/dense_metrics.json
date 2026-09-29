@@ -1,0 +1,12 @@
+{
+  "retriever": "dense-multilingual",
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "total_qa": 50,
+  "recall_at_k": {
+    "1": 0.44,
+    "3": 0.6,
+    "5": 0.62,
+    "10": 0.74
+  },
+  "mrr": 0.5354444444444444
+}
