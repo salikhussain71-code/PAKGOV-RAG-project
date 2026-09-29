@@ -1,0 +1,7 @@
+{
+  "total_qa": 50,
+  "grounded_cited": 37,
+  "insufficient": 13,
+  "grounded_rate": 0.74,
+  "rrf_r5_expected": 0.74
+}
