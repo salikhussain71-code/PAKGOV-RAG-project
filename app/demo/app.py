@@ -1,55 +1,105 @@
-import json, os
+import json, re, unicodedata
+from pathlib import Path
+import numpy as np
+import streamlit as st
 
-os.makedirs("evaluation/retrieval", exist_ok=True)
+ROOT = Path(__file__).resolve().parents[2]
+PROC = ROOT / "data" / "processed"
+MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+RRF_K = 60
 
-bm25 = json.load(open("evaluation/retrieval/bm25_metrics.json",encoding="utf-8"))
-dense = json.load(open("evaluation/retrieval/dense_metrics.json",encoding="utf-8"))
-rrf = json.load(open("evaluation/retrieval/hybrid_rrf_metrics.json",encoding="utf-8"))
-grounded = json.load(open("evaluation/retrieval/grounded_metrics.json",encoding="utf-8"))
-urdu = json.load(open("evaluation/retrieval/urdu_unicode_report.json",encoding="utf-8"))
+st.set_page_config(page_title="PAKGOV-RAG", layout="wide")
+st.title("PAKGOV-RAG")
+st.caption("Bilingual Urdu-English retrieval over Pakistani legal documents. "
+           "Hybrid BM25 + dense (RRF k=60). Extractive answers only, no generated text.")
 
-table = f"""# PAKGOV-RAG - Final Retrieval Results - 100% Verified
+def clean_source(name):
+    n = str(name).replace("PAKISTANCODE__", "")
+    n = re.sub(r"\.(txt|pdf)$", "", n)
+    return n.replace("_", " ").strip()
 
-## Dataset
-- Chunks: 6711
-- QA: 50 verified (15 en, 15 ur, 20 mixed)
-- Model: {urdu['model']} 384 dim
-- Urdu-English similarity: {urdu['urdu_en_sim']:.4f}
+@st.cache_data(show_spinner="Loading chunks...")
+def load_chunks():
+    lines = (PROC / "chunks.jsonl").read_text(encoding="utf-8").splitlines()
+    out = []
+    for i, l in enumerate(l for l in lines if l.strip()):
+        r = json.loads(l)
+        out.append({
+            "text": unicodedata.normalize("NFC", str(r.get("text", ""))),
+            "source": clean_source(r.get("source_file", "unknown")),
+            "loc": f"chars {r.get('start_char', '?')}-{r.get('end_char', '?')}",
+        })
+    return out
 
-## Retrieval Comparison - Same 50 QA - Fair
+chunks = load_chunks()
+st.sidebar.write(f"Loaded **{len(chunks)}** chunks")
+top_k = st.sidebar.slider("Results", 1, 10, 5)
+min_cos = st.sidebar.slider("Min cosine for 'cited' (demo rule)", 0.0, 1.0, 0.20, 0.01)
+st.sidebar.caption("Demo rule only. It is not the Part XIII evaluation rule.")
 
-| Retriever | R@1 | R@3 | R@5 | R@10 | MRR |
-|---|---|---|---|---|---|
-| BM25 | {bm25['recall_at_k']['1']:.3f} | {bm25['recall_at_k']['3']:.3f} | {bm25['recall_at_k']['5']:.3f} | {bm25['recall_at_k']['10']:.3f} | {bm25['mrr']:.3f} |
-| Dense Multilingual | {dense['recall_at_k']['1']:.3f} | {dense['recall_at_k']['3']:.3f} | {dense['recall_at_k']['5']:.3f} | {dense['recall_at_k']['10']:.3f} | {dense['mrr']:.3f} |
-| Hybrid RRF k={rrf['k']} | {rrf['recall_at_k']['1']:.3f} | {rrf['recall_at_k']['3']:.3f} | {rrf['recall_at_k']['5']:.3f} | {rrf['recall_at_k']['10']:.3f} | {rrf['mrr']:.3f} |
+def tok(s):
+    return re.findall(r"\w+", unicodedata.normalize("NFC", s).lower())
 
-## Key Findings - No sugarcoating
-- BM25 R@5 0.640 > Dense R@5 0.620 but Dense MRR 0.535 > BM25 0.469 - Dense ranks better
-- RRF Hybrid R@5 0.740 beats both by +10% - R@10 0.820
-- Failure at R@5: 13/50 (26%) - categorized in failure_analysis_50.md
-- Grounded generation: {grounded['grounded_cited']} cited ({grounded['grounded_rate']*100:.1f}%) + {grounded['insufficient']} insufficient (26.0%) - matches R@5
+@st.cache_resource(show_spinner="Building BM25...")
+def get_bm25():
+    from rank_bm25 import BM25Okapi
+    return BM25Okapi([tok(c["text"]) for c in chunks])
 
-## Urdu Support Stage 138
-- Unicode NFC normalized: OK
-- Embedding shape: {urdu['embedding_shape']} - Official 384
-- Urdu-English semantic similarity: {urdu['urdu_en_sim']:.4f} >0.5 threshold
-- QA lang distribution: mixed 20, ur 15, en 15
+@st.cache_resource(show_spinner="Loading model and FAISS index...")
+def get_dense():
+    import faiss
+    from sentence_transformers import SentenceTransformer
+    index = faiss.read_index(str(PROC / "faiss_index" / "index.faiss"))
+    return SentenceTransformer(MODEL), index
 
-## Files - Raw Evidence - Not Typed Memory
-- data/interim/bm25_results_50.jsonl
-- data/interim/dense_results_50.jsonl
-- data/interim/hybrid_rrf_results_50.jsonl
-- data/interim/grounded_answers_50.jsonl
-- evaluation/retrieval/*_metrics.json
-- evaluation/retrieval/failure_analysis_50.md
-- evaluation/retrieval/urdu_unicode_report.json
+bm25 = get_bm25()
+model, index = get_dense()
+if index.ntotal != len(chunks):
+    st.error(f"FAISS has {index.ntotal} vectors but chunks.jsonl has {len(chunks)}. Order may not match.")
+    st.stop()
 
-This is professional evidence for recruiter / MS admission - Sequence wise PDF stages 083-138 + Part XIII.
-"""
+def unit(v):
+    return v / (np.linalg.norm(v) + 1e-9)
 
-with open("evaluation/retrieval/FINAL_RESULTS.md","w",encoding="utf-8") as f:
-    f.write(table)
+def search(q, k):
+    qv = unit(model.encode([q])[0].astype("float32"))
+    _, d_ids = index.search(qv.reshape(1, -1), 50)
+    d_ids = [int(i) for i in d_ids[0] if i >= 0]
+    b_scores = bm25.get_scores(tok(q))
+    b_ids = [int(i) for i in np.argsort(-b_scores)[:50]]
+    fused = {}
+    for r, i in enumerate(b_ids, 1):
+        fused[i] = fused.get(i, 0) + 1 / (RRF_K + r)
+    for r, i in enumerate(d_ids, 1):
+        fused[i] = fused.get(i, 0) + 1 / (RRF_K + r)
+    top = sorted(fused, key=fused.get, reverse=True)[:k]
+    res = []
+    for i in top:
+        cos = float(unit(index.reconstruct(i).astype("float32")) @ qv)
+        res.append((i, fused[i], float(b_scores[i]), cos))
+    return res
 
-print(table)
-print("\nSaved: evaluation/retrieval/FINAL_RESULTS.md - Ready for README")
+def best_sentences(q, text, n=2):
+    sents = [s.strip() for s in re.split(r"(?<=[.!?۔;:])\s+", text) if len(s.strip()) > 20]
+    qt = set(tok(q))
+    sents.sort(key=lambda s: len(qt & set(tok(s))), reverse=True)
+    return sents[:n] or [text[:300]]
+
+q = st.text_input("Ask a question (English or اردو)",
+                  placeholder="What is the Right to Information?  /  آرٹیکل 19 اے کیا ہے؟")
+if q:
+    hits = search(q, top_k)
+    top = chunks[hits[0][0]]
+    if max(h[3] for h in hits) < min_cos:
+        st.warning("INSUFFICIENT EVIDENCE: no retrieved chunk is similar enough to the question.")
+    else:
+        st.subheader("Answer (extracted from the top source)")
+        for s in best_sentences(q, top["text"]):
+            st.write(s + " [1]")
+        st.success(f"CITED [1]: {top['source']} | {top['loc']}")
+    st.subheader("Retrieved sources")
+    for n, (i, rrf, b, cos) in enumerate(hits, 1):
+        c = chunks[i]
+        with st.expander(f"[{n}] {c['source']} | {c['loc']} | RRF {rrf:.4f}"):
+            st.caption(f"BM25 {b:.2f} | dense cosine {cos:.3f}")
+            st.write(c["text"])
