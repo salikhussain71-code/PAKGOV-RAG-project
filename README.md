@@ -127,6 +127,35 @@ app/
 - Stronger multilingual embeddings and a cross-encoder reranker
 - Article-aware chunking to reduce retrieval misses
 - Extension to other Pakistani government documents
+## Senate Extension - 10 PDFs Official senate.gov.pk - 1-2 Oct 2026
+
+**Official Source:** https://www.senate.gov.pk/en/rules.php - Publications -> Rules and Acts - Copyright 2019-2026 Senate of Pakistan
+
+### PDFs Downloaded - data/raw/senate/ - 10 files official:
+- Rules_Procedure_Conduct_Business_Senate_2012_2026.pdf - 111 pages - 219683 chars - Updated 6 Feb 2026
+- Constitution_Pakistan_2025_11_14.pdf - 176 pages - 454525 chars - Updated 14 Nov 2025
+- Chairman_Speaker_Salaries_Act_1975.pdf - 11 pages - 28231 chars
+- Dy_Chairman_Dy_Speaker_Salaries_Act_1975.pdf - 11 pages - 26020 chars
+- Enhancement_Role_Powers_Senate_2017.pdf - 32 pages - 34908 chars
+- Members_Parliament_Salaries_Act_1974_Medical_Rules_1990.pdf - 44 pages - 66423 chars
+- Parliament_Joint_Sittings_Rules_1973.pdf - 23 pages - SCANNED 0 chars original - Placeholder 198 chars - OCR via Tesseract pending
+- Senate_Finance_Committee_Rules_1973.pdf - 10 pages - SCANNED 0 chars original - Placeholder 197 chars - OCR pending
+- Senate_Secretariat_Service_Act_2017.pdf - 15 pages - 25532 chars
+- Senate_Secretariat_Service_Rules_2021.pdf - 26 pages - 3286 chars
+
+### Pipeline - Commands Executed - Evidence:
+```bash
+python ingestion/extract.py --input data/raw/senate --output data/interim/senate_raw.jsonl
+# Total 10 PDFs saved - 2 scanned PDFs handled without crash - 8 readable + 2 placeholder
+
+python ingestion/chunking/chunk_documents.py --input data/interim/senate_raw.jsonl --output data/processed/senate_chunks.jsonl
+# Saved 1080 chunks
+
+python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output data/processed/senate_faiss
+# Loading model paraphrase-multilingual-MiniLM-L12-v2 for 1080 chunks...
+# Loading weights: 100% 199/199 [00:01, 118.24it/s]
+# Batches: 100% 34/34 [04:43]
+# Saved FAISS index with 1080 vectors
 
 ## Author
 
