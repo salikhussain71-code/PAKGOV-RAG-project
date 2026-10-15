@@ -1,6 +1,6 @@
 # PAKGOV-RAG
 
-**Bilingual (Urdu + English) Retrieval-Augmented Generation over the Constitution of Pakistan**
+**Bilingual (Urdu + English) Retrieval-Augmented-Generation over the Constitution of Pakistan**
 
 Hybrid retrieval (BM25 + dense embeddings fused with Reciprocal Rank Fusion), citation-grounded answers, and an evaluation that reports failures openly.
 
