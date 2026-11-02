@@ -11,8 +11,6 @@ RRF R@5
 RRF MRR
 License
 
-[![olud.ai](https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project)](https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html)
-
 ---
 
 Overview
