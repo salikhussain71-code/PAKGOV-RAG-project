@@ -452,6 +452,13 @@ MIT License. Copyright (c) 2026 Salik Hussain. See [LICENSE](LICENSE).
 
 ---
 
+## Open-Source Recognition
+
+- **olud.ai:** PAKGOV-RAG listed in the AI project directory.
+- **XERJ Corpus Hub:** PAKGOV-RAG selected for the indexed corpus hub, with attribution.
+
+---
+
 <div align="center">
 
 ⭐ If this project helps your research, please star the repo.
