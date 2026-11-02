@@ -12,7 +12,7 @@
 
 *Hybrid retrieval · Citation-grounded answers · Failures reported openly*
 
-<!-- ROW 1: recognition + repo status -->
+<!-- ROW 1: recognition + status -->
 <p align="center">
   <a href="https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html"><img src="https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project" alt="olud.ai"></a>
   <img src="https://img.shields.io/badge/XERJ%20Corpus%20Hub-Selected%20%7C%20Attributed-gold?logo=databricks&logoColor=white" alt="XERJ Corpus Hub">
@@ -44,6 +44,7 @@
   <img src="https://img.shields.io/badge/Languages-Urdu%20%7C%20English%20%7C%20Mixed-purple" alt="Languages">
   <img src="https://img.shields.io/badge/Focus-Urdu%20NLP%20%7C%20Low--Resource%20AI-teal" alt="Focus">
   <img src="https://img.shields.io/badge/Answers-Extractive%20%7C%20Cited-informational" alt="Answers">
+  <img src="https://img.shields.io/badge/Reproducible-One%20Command-success" alt="Reproducible">
 </p>
 
 <!-- ROW 5: tech stack -->
@@ -111,7 +112,7 @@
 
 PAKGOV-RAG answers questions about the **Constitution of Pakistan** in **English, Urdu, or a mix of both**.
 
-1. It **retrieves** the most relevant passages (BM25 + dense, fused with RRF).
+1. It **retrieves** the most relevant passages (BM25 + dense, fused with Reciprocal Rank Fusion).
 2. It **extracts** the answer only from retrieved passages, with no free-form generation.
 3. It **cites** the source passage.
 4. If the evidence does not contain the answer, it says **"insufficient evidence"** instead of guessing.
@@ -162,7 +163,7 @@ Hybrid  ███████████████░░░░░░░░░
 
 - Hybrid RRF is the strongest on **every metric**.
 - At R@5 it is **10 points above BM25** and **12 points above dense retrieval**.
-- BM25 and dense fail on different questions, and fusing them recovers many of those misses.
+- Dense retrieval beats BM25 at R@1, R@10 and MRR, but BM25 is slightly ahead at R@5 (0.640 vs 0.620).
 
 ### 🛡️ Grounded answers (50 questions)
 
@@ -190,52 +191,65 @@ The 13 refusals match the 13 questions where the gold source was **not** in the 
 | Urdu | 15 |
 | Mixed-language | 20 |
 | Corpus | 6,711 chunks from Constitution of Pakistan PDFs, with page and article metadata preserved |
+| Metrics | Recall@1, Recall@3, Recall@5, Recall@10, MRR |
 
 ---
 
 ## ✅ Project Status: Done vs Remaining
 
-**Overall:** the core research pipeline and evaluation are complete. Current work is extending to more documents and improving retrieval quality.
+**Summary:** the core research pipeline, evaluation, demo and open-source setup are complete. Remaining work is extending coverage (OCR, more documents) and improving retrieval quality.
 
 ```
-Core pipeline & evaluation   ████████████████████  DONE
-Demo application             ████████████████████  DONE
-Senate corpus extension      ██████████████░░░░░░  IN PROGRESS (8 of 10 PDFs readable)
-Retrieval improvements       ████░░░░░░░░░░░░░░░░  PLANNED
+Core pipeline & evaluation   ████████████████████  100%  DONE
+Demo application             ████████████████████  100%  DONE
+Open-source setup            ████████████████████  100%  DONE
+Recognition                  ████████████████████  100%  DONE
+Senate corpus extension      ██████████████░░░░░░   80%  IN PROGRESS (8 of 10 PDFs readable)
+Retrieval improvements       ░░░░░░░░░░░░░░░░░░░░    0%  PLANNED
+Public deployment & paper    ░░░░░░░░░░░░░░░░░░░░    0%  PLANNED
 ```
 
-### ✅ Done
+### ✅ Done (everything completed so far)
 
-| Area | What was completed |
-|---|---|
-| **Ingestion** | PDF text extraction with PyMuPDF / pdfplumber, cleaning, Unicode NFC normalization |
-| **Chunking** | 6,711 chunks with page and article metadata preserved |
-| **Embeddings** | `paraphrase-multilingual-MiniLM-L12-v2`, 384 dimensions |
-| **Retrieval** | BM25 baseline, dense FAISS search, and Hybrid RRF (k=60) |
-| **Evaluation** | 50 questions (15 EN / 15 UR / 20 mixed) with manually verified gold sources; Recall@1/3/5/10 and MRR |
-| **Grounded answers** | Extractive answers with citations; `insufficient evidence` when support is missing |
-| **Failure analysis** | All 13 R@5 misses logged in `failure_analysis_50.md` |
-| **Reproducibility** | Raw `.jsonl` results and `.json` metrics committed; one command regenerates the table |
-| **Demo** | Streamlit app with adjustable result count and citation threshold |
-| **Senate extension** | 10 official PDFs downloaded, extracted, chunked (1,080 chunks), and indexed (1,080 FAISS vectors) |
-| **Robustness** | 2 scanned PDFs handled without crashing the pipeline |
-| **Open-source setup** | MIT license, contributing guide, security policy |
-| **Recognition** | Listed on olud.ai; selected for the XERJ Corpus Hub with attribution |
-
-### 🔜 Remaining
-
-| Priority | Task | Why it matters |
+| # | Area | What was completed |
 |:---:|---|---|
-| 🔴 High | **OCR the 2 scanned Senate PDFs** (Tesseract) | Joint Sittings Rules 1973 and Finance Committee Rules 1973 currently contribute only placeholder text |
-| 🔴 High | **Larger, more varied evaluation set** | 50 questions means one question is worth 2 points; more questions make the ranking reliable |
-| 🔴 High | **Evaluate on the Senate corpus** | Shows whether results carry beyond the Constitution |
-| 🟠 Medium | **Cross-encoder reranker** | Targets the 13 questions that miss at R@5 |
-| 🟠 Medium | **Stronger multilingual embeddings** | MiniLM-L12 is fast but not the strongest option for Urdu |
-| 🟠 Medium | **Article-aware chunking** | Keeps each article intact to reduce retrieval misses |
-| 🟡 Planned | **Fix the low text yield** in `Senate_Secretariat_Service_Rules_2021` (26 pages, only 3,286 chars) | Likely partial scan or extraction issue |
-| 🟡 Planned | **Unified index** across the Constitution and Senate documents | One search over all documents |
-| 🟡 Planned | **Public deployment** of the demo | Lets anyone try it without installing |
-| 🟡 Planned | **Short write-up / paper** on Urdu legal retrieval | Turns the evaluation into a citable result |
+| 1 | **Ingestion** | PDF text extraction with PyMuPDF and pdfplumber, cleaning, Unicode NFC normalization of Urdu text |
+| 2 | **Chunking** | 6,711 chunks from the Constitution PDFs, with page and article metadata preserved |
+| 3 | **Embeddings** | `paraphrase-multilingual-MiniLM-L12-v2`, 384-dimensional vectors (test batch shape `[5, 384]`) |
+| 4 | **Lexical retrieval** | BM25 baseline with `rank_bm25` |
+| 5 | **Dense retrieval** | FAISS semantic search over the multilingual embeddings |
+| 6 | **Hybrid retrieval** | Reciprocal Rank Fusion (k=60) combining BM25 and dense rankings |
+| 7 | **Evaluation set** | 50 questions (15 English, 15 Urdu, 20 mixed) with manually verified gold sources |
+| 8 | **Metrics** | Recall@1/3/5/10 and MRR for all three retrievers on the same set |
+| 9 | **Grounded answers** | Extractive answers with `[Source: …]` citations; 37 of 50 answered, 13 returned `insufficient evidence` |
+| 10 | **Failure analysis** | All 13 R@5 misses written up in `failure_analysis_50.md` |
+| 11 | **Urdu checks** | `urdu_unicode_report.json` plus a cross-lingual similarity check (0.8370) |
+| 12 | **Reproducibility** | Raw `.jsonl` results and `.json` metrics committed; `python app/eval/final_table.py` regenerates the table |
+| 13 | **Demo app** | Streamlit app with result-count slider, citation threshold, extracted answer, citation box and expandable retrieved sources with RRF scores |
+| 14 | **Senate extension** | 10 official senate.gov.pk PDFs downloaded, extracted, chunked (1,080 chunks) and indexed (1,080 FAISS vectors) |
+| 15 | **Robustness** | 2 scanned PDFs handled without crashing the pipeline (placeholders written) |
+| 16 | **Repository structure** | Organized into `app`, `data`, `docs`, `evaluation`, `generation`, `ingestion`, `retrieval`, `scripts`, `tests`, `.github` |
+| 17 | **Open-source setup** | MIT license, contributing guide, security policy |
+| 18 | **Documentation** | Professional README with results, architecture diagram, limitations and demo screenshot |
+| 19 | **Recognition** | Listed on olud.ai; selected for the XERJ Corpus Hub with attribution |
+| 20 | **Community traction** | 129 stars and 5 forks on GitHub |
+
+### 🔜 Remaining (everything still to do)
+
+| # | Priority | Task | Why it matters | Done when |
+|:---:|:---:|---|---|---|
+| 1 | 🔴 High | **OCR the 2 scanned Senate PDFs** with Tesseract (Joint Sittings Rules 1973, Finance Committee Rules 1973) | Both currently contribute only placeholder text (198 and 197 chars) | Both PDFs produce real text and are re-chunked and re-indexed |
+| 2 | 🔴 High | **Larger, more varied evaluation set** | With 50 questions, one question is worth 2 points, so rankings are only indicative | A bigger set is built and all three retrievers are re-evaluated |
+| 3 | 🔴 High | **Evaluate on the Senate corpus** | Shows whether results carry beyond the Constitution | Recall and MRR reported for the Senate documents |
+| 4 | 🟠 Medium | **Cross-encoder reranker** | Targets the 13 questions that miss at R@5 | Reranked results compared against Hybrid RRF on the same set |
+| 5 | 🟠 Medium | **Stronger multilingual embeddings** | MiniLM-L12 is fast but not the strongest option for Urdu | At least one larger encoder compared to MiniLM-L12 |
+| 6 | 🟠 Medium | **Article-aware chunking** | Keeps each article intact to reduce retrieval misses | New chunking evaluated against the current 6,711-chunk setup |
+| 7 | 🟡 Planned | **Fix low text yield** in `Senate_Secretariat_Service_Rules_2021` (26 pages, only 3,286 chars) | Likely a partial scan or extraction issue | Text yield matches the page count |
+| 8 | 🟡 Planned | **Unified index** across the Constitution and Senate documents | One search over all documents | One index, one demo, all documents searchable |
+| 9 | 🟡 Planned | **Synthesized answers across sources** | The demo is extractive and uses only the top source | Multi-source answers with citations for each claim |
+| 10 | 🟡 Planned | **Public deployment** of the demo | Anyone can try it without installing | A public link works |
+| 11 | 🟡 Planned | **Short write-up or paper** on Urdu legal retrieval | Turns the evaluation into a citable result | A write-up is published |
+| 12 | 🟡 Planned | **Extension to other Pakistani government documents** | Broadens coverage beyond legal texts | At least one new document family ingested and evaluated |
 
 ---
 
@@ -345,18 +359,18 @@ app/
 
 Extended the pipeline to **10 official PDFs** from [senate.gov.pk](https://www.senate.gov.pk/en/rules.php) (Publications → Rules and Acts), saved in `data/raw/senate/`.
 
-| File | Pages | Status |
-|---|:---:|---|
-| Rules_Procedure_Conduct_Business_Senate_2012_2026 | 111 | ✅ readable |
-| Constitution_Pakistan_2025_11_14 | 176 | ✅ readable |
-| Chairman_Speaker_Salaries_Act_1975 | 11 | ✅ readable |
-| Dy_Chairman_Dy_Speaker_Salaries_Act_1975 | 11 | ✅ readable |
-| Enhancement_Role_Powers_Senate_2017 | 32 | ✅ readable |
-| Members_Parliament_Salaries_Act_1974_Medical_Rules_1990 | 44 | ✅ readable |
-| Senate_Secretariat_Service_Act_2017 | 15 | ✅ readable |
-| Senate_Secretariat_Service_Rules_2021 | 26 | ⚠️ readable, low text yield |
-| Parliament_Joint_Sittings_Rules_1973 | 23 | ⏳ scanned, OCR (Tesseract) pending |
-| Senate_Finance_Committee_Rules_1973 | 10 | ⏳ scanned, OCR (Tesseract) pending |
+| File | Pages | Characters | Status |
+|---|:---:|:---:|---|
+| Rules_Procedure_Conduct_Business_Senate_2012_2026 | 111 | 219,683 | ✅ readable (updated 6 Feb 2026) |
+| Constitution_Pakistan_2025_11_14 | 176 | 454,525 | ✅ readable (updated 14 Nov 2025) |
+| Chairman_Speaker_Salaries_Act_1975 | 11 | 28,231 | ✅ readable |
+| Dy_Chairman_Dy_Speaker_Salaries_Act_1975 | 11 | 26,020 | ✅ readable |
+| Enhancement_Role_Powers_Senate_2017 | 32 | 34,908 | ✅ readable |
+| Members_Parliament_Salaries_Act_1974_Medical_Rules_1990 | 44 | 66,423 | ✅ readable |
+| Senate_Secretariat_Service_Act_2017 | 15 | 25,532 | ✅ readable |
+| Senate_Secretariat_Service_Rules_2021 | 26 | 3,286 | ⚠️ readable, low text yield |
+| Parliament_Joint_Sittings_Rules_1973 | 23 | 0 (placeholder 198) | ⏳ scanned, Tesseract OCR pending |
+| Senate_Finance_Committee_Rules_1973 | 10 | 0 (placeholder 197) | ⏳ scanned, Tesseract OCR pending |
 
 **Pipeline run**
 
@@ -366,7 +380,7 @@ python ingestion/chunking/chunk_documents.py --input data/interim/senate_raw.jso
 python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output data/processed/senate_faiss
 ```
 
-**Outcome:** 10 PDFs processed, 2 scanned PDFs handled without crashing, **1,080 chunks** saved, and a FAISS index built with **1,080 vectors**.
+**Outcome:** 10 PDFs processed (8 readable + 2 placeholders), 2 scanned PDFs handled without crashing, **1,080 chunks** saved, and a FAISS index built with **1,080 vectors**. Embedding 1,080 chunks took 4 min 43 s.
 
 *Source: Senate of Pakistan, © 2019–2026.*
 
@@ -379,6 +393,7 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 - **Failures are real.** 13 of 50 questions (26%) miss at R@5. The system refuses rather than hallucinates, but it does not yet recover them. See `evaluation/retrieval/failure_analysis_50.md`.
 - **Lightweight embedding model.** MiniLM-L12 is fast but not the strongest option for Urdu. Larger multilingual encoders and rerankers are the obvious next step.
 - **Extractive only.** Answers are pulled from the top source, not synthesized across several sources.
+- **Senate OCR pending.** Two scanned Senate PDFs are not yet searchable.
 
 ---
 
@@ -389,6 +404,7 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 - [x] Failure analysis published
 - [x] Streamlit demo
 - [x] Senate documents ingested, chunked, and embedded (1,080 chunks)
+- [x] MIT license, contributing guide, security policy
 - [x] Listed on olud.ai and selected for the XERJ Corpus Hub
 - [ ] OCR (Tesseract) for the 2 scanned Senate PDFs
 - [ ] Larger, more varied evaluation set
@@ -396,9 +412,12 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 - [ ] Cross-encoder reranker
 - [ ] Stronger multilingual embeddings
 - [ ] Article-aware chunking
+- [ ] Fix low text yield in Senate_Secretariat_Service_Rules_2021
 - [ ] Unified index across all documents
+- [ ] Multi-source synthesized answers
 - [ ] Public deployment
 - [ ] Short write-up on Urdu legal retrieval
+- [ ] Extension to other Pakistani government documents
 
 ---
 
@@ -412,6 +431,7 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 | **Data engineering** | PDF extraction, scanned-PDF handling, chunking with metadata |
 | **Reproducible research** | Committed raw outputs, one-command result regeneration |
 | **Applied ML engineering** | FAISS indexing, sentence-transformers, Streamlit app |
+| **Open-source practice** | MIT license, contributing guide, security policy, public repo |
 
 ---
 
