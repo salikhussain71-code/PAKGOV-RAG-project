@@ -25,8 +25,9 @@ for b in bm25:
     b_ranks = {cid: rank+1 for rank, cid in enumerate(b["retrieved_chunk_ids"])}
     d_ranks = {cid: rank+1 for rank, cid in enumerate(d["retrieved_chunk_ids"])}
 
-    # Collect all unique chunk_ids from both
-    all_cids = set(b_ranks.keys()) | set(d_ranks.keys())
+    # Keep first-seen order so equal RRF scores do not depend on hash seed.
+    # This matches the demo: BM25 candidates first, then dense-only candidates.
+    all_cids = dict.fromkeys([*b_ranks, *d_ranks])
 
     rrf_scores = {}
     sources = {}
