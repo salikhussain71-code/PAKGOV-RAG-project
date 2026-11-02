@@ -1,117 +1,72 @@
 <div align="center">
 
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=PAKGOV-RAG&fontSize=60&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Urdu%20%2B%20English%20RAG%20for%20Pakistani%20Legal%20Documents&descAlignY=60&descSize=18" alt="PAKGOV-RAG banner" width="100%">
+
 <img src="https://github.com/salikhussain71-code.png" width="110" alt="Salik Hussain" style="border-radius:50%">
 
-# 🇵🇰 PAKGOV-RAG
+<a href="https://github.com/salikhussain71-code/PAKGOV-RAG-project">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1200&color=22C55E&center=true&vCenter=true&width=720&lines=Hybrid+BM25+%2B+Dense+Retrieval+(RRF);Urdu+%2B+English+%2B+Mixed+Queries;Citation-Grounded+Answers;Failures+Reported+Openly" alt="Typing animation">
+</a>
 
 ### Bilingual (Urdu + English) Retrieval-Augmented Generation over Pakistani Government & Legal Documents
 
 *Hybrid retrieval · Citation-grounded answers · Failures reported openly*
 
-[
-
-![olud.ai](https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project)
-
-](https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html)
-
-
-![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)
-
-
-
-
-![License](https://img.shields.io/badge/License-MIT-green)
-
-
-
-
-![Status](https://img.shields.io/badge/Status-Active%20Research-blueviolet)
-
-
-
-
-![Stars](https://img.shields.io/github/stars/salikhussain71-code/PAKGOV-RAG-project?style=flat&logo=github)
-
-
-
-
-![Forks](https://img.shields.io/github/forks/salikhussain71-code/PAKGOV-RAG-project?style=flat&logo=github)
-
-
-
-
-![Last Commit](https://img.shields.io/github/last-commit/salikhussain71-code/PAKGOV-RAG-project)
-
-
-
-
-![Repo Size](https://img.shields.io/github/repo-size/salikhussain71-code/PAKGOV-RAG-project)
-
-
-
-
-
-![Corpus](https://img.shields.io/badge/Corpus-6%2C711%20chunks-blue)
-
-
-
-
-![Eval](https://img.shields.io/badge/Eval%20Set-50%20questions-orange)
-
-
-
-
-![R@5](https://img.shields.io/badge/Hybrid%20RRF%20R%405-0.740-brightgreen)
-
-
-
-
-![MRR](https://img.shields.io/badge/Hybrid%20RRF%20MRR-0.605-brightgreen)
-
-
-
-
-![Grounded](https://img.shields.io/badge/Grounded%20Answers-74%25-success)
-
-
-
-
-![Languages](https://img.shields.io/badge/Languages-Urdu%20%7C%20English%20%7C%20Mixed-purple)
-
-
-
-
-![Research](https://img.shields.io/badge/Focus-Urdu%20NLP%20%7C%20Low--Resource%20AI-teal)
-
-
-
-
-
-![FAISS](https://img.shields.io/badge/FAISS-dense%20search-0467DF)
-
-
-
-
-![BM25](https://img.shields.io/badge/BM25-rank__bm25-lightgrey)
-
-
-
-
-![SBERT](https://img.shields.io/badge/sentence--transformers-5.1.2-orange)
-
-
-
-
-![Streamlit](https://img.shields.io/badge/Streamlit-1.64.0-FF4B4B?logo=streamlit&logoColor=white)
-
-
-
-
-![PyMuPDF](https://img.shields.io/badge/PyMuPDF-pdfplumber-informational)
-
-
-
-[**Demo**](#-live-demo) · [**Results**](#-results) · [**Done vs Remaining**](#-project-status-done-vs-remaining) · [**Architecture**](#-architecture) · [**Reproduce**](#-reproduce-the-results) · [**Limitations**](#-limitations) · [**Roadmap**](#-roadmap) · [**Author**](#-author)
+<!-- ROW 1: recognition + repo status -->
+<p align="center">
+  <a href="https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html"><img src="https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project" alt="olud.ai"></a>
+  <img src="https://img.shields.io/badge/XERJ%20Corpus%20Hub-Selected%20%7C%20Attributed-gold?logo=databricks&logoColor=white" alt="XERJ Corpus Hub">
+  <img src="https://img.shields.io/badge/Status-Active%20Research-blueviolet" alt="Status">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white" alt="Python">
+</p>
+
+<!-- ROW 2: live GitHub stats -->
+<p align="center">
+  <img src="https://img.shields.io/github/stars/salikhussain71-code/PAKGOV-RAG-project?style=flat&logo=github" alt="Stars">
+  <img src="https://img.shields.io/github/forks/salikhussain71-code/PAKGOV-RAG-project?style=flat&logo=github" alt="Forks">
+  <img src="https://img.shields.io/github/last-commit/salikhussain71-code/PAKGOV-RAG-project" alt="Last Commit">
+  <img src="https://img.shields.io/github/repo-size/salikhussain71-code/PAKGOV-RAG-project" alt="Repo Size">
+  <img src="https://img.shields.io/github/languages/top/salikhussain71-code/PAKGOV-RAG-project" alt="Top Language">
+</p>
+
+<!-- ROW 3: results -->
+<p align="center">
+  <img src="https://img.shields.io/badge/Corpus-6%2C711%20chunks-blue" alt="Corpus">
+  <img src="https://img.shields.io/badge/Eval%20Set-50%20questions-orange" alt="Eval">
+  <img src="https://img.shields.io/badge/Hybrid%20RRF%20R%405-0.740-brightgreen" alt="R@5">
+  <img src="https://img.shields.io/badge/Hybrid%20RRF%20MRR-0.605-brightgreen" alt="MRR">
+  <img src="https://img.shields.io/badge/Grounded%20Answers-74%25-success" alt="Grounded">
+</p>
+
+<!-- ROW 4: language + focus -->
+<p align="center">
+  <img src="https://img.shields.io/badge/Languages-Urdu%20%7C%20English%20%7C%20Mixed-purple" alt="Languages">
+  <img src="https://img.shields.io/badge/Focus-Urdu%20NLP%20%7C%20Low--Resource%20AI-teal" alt="Focus">
+  <img src="https://img.shields.io/badge/Answers-Extractive%20%7C%20Cited-informational" alt="Answers">
+</p>
+
+<!-- ROW 5: tech stack -->
+<p align="center">
+  <img src="https://img.shields.io/badge/FAISS-dense%20search-0467DF" alt="FAISS">
+  <img src="https://img.shields.io/badge/BM25-rank__bm25-lightgrey" alt="BM25">
+  <img src="https://img.shields.io/badge/sentence--transformers-5.1.2-orange" alt="SBERT">
+  <img src="https://img.shields.io/badge/Streamlit-1.64.0-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/PyMuPDF-pdfplumber-informational" alt="PyMuPDF">
+</p>
+
+<!-- ROW 6: navigation -->
+<p align="center">
+  <a href="#-live-demo"><b>Demo</b></a> ·
+  <a href="#-open-source-recognition"><b>Recognition</b></a> ·
+  <a href="#-results"><b>Results</b></a> ·
+  <a href="#-project-status-done-vs-remaining"><b>Done vs Remaining</b></a> ·
+  <a href="#-architecture"><b>Architecture</b></a> ·
+  <a href="#-reproduce-the-results"><b>Reproduce</b></a> ·
+  <a href="#-limitations"><b>Limitations</b></a> ·
+  <a href="#-roadmap"><b>Roadmap</b></a> ·
+  <a href="#-author"><b>Author</b></a>
+</p>
 
 </div>
 
@@ -134,6 +89,24 @@
 
 ---
 
+## 🏅 Open-Source Recognition
+
+| 🌐 Listed On | 🏆 Recognition |
+|:---:|:---|
+| **olud.ai** | PAKGOV-RAG is listed in the olud.ai AI project directory. |
+| **XERJ Corpus Hub** | PAKGOV-RAG was selected for the indexed corpus hub, with attribution. |
+
+<p align="center">
+  <a href="https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html"><img src="https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project" alt="olud.ai"></a>
+  <img src="https://img.shields.io/badge/Directory-Listed%20on%20olud.ai-blueviolet?logo=starship&logoColor=white" alt="Listed">
+  <img src="https://img.shields.io/badge/XERJ%20Corpus%20Hub-Selected%20%7C%20Attributed-gold?logo=databricks&logoColor=white" alt="XERJ">
+  <img src="https://img.shields.io/badge/Open%20Source-MIT-green?logo=opensourceinitiative&logoColor=white" alt="Open Source">
+</p>
+
+> 💬 *Independent platforms have indexed and credited this project, which makes it easier for other researchers to find and verify the work.*
+
+---
+
 ## 🎯 Overview
 
 PAKGOV-RAG answers questions about the **Constitution of Pakistan** in **English, Urdu, or a mix of both**.
@@ -150,6 +123,12 @@ It is also a small, honest study of retrieval quality on a **low-resource langua
 - Government and legal documents are hard for ordinary citizens to search, especially in Urdu.
 - Most RAG demos report only their successes. This project publishes its failures too.
 - Urdu is under-served by NLP tooling, so measuring where retrieval breaks is useful in itself.
+
+### ⭐ Project Highlights
+
+| 🔎 Hybrid search | 🛡️ No guessing | 🧾 Fully reproducible | 🌍 Low-resource focus |
+|:---:|:---:|:---:|:---:|
+| BM25 + dense fused with RRF beats both alone | Refuses when evidence is missing | Raw outputs committed, one command regenerates results | Urdu, English and mixed queries |
 
 ---
 
@@ -185,7 +164,7 @@ Hybrid  ███████████████░░░░░░░░░
 - At R@5 it is **10 points above BM25** and **12 points above dense retrieval**.
 - BM25 and dense fail on different questions, and fusing them recovers many of those misses.
 
-### 🛡️ Grounded generation (50 questions)
+### 🛡️ Grounded answers (50 questions)
 
 | Outcome | Count | Share |
 |---|:---:|:---:|
@@ -241,6 +220,7 @@ Retrieval improvements       ████░░░░░░░░░░░░░
 | **Senate extension** | 10 official PDFs downloaded, extracted, chunked (1,080 chunks), and indexed (1,080 FAISS vectors) |
 | **Robustness** | 2 scanned PDFs handled without crashing the pipeline |
 | **Open-source setup** | MIT license, contributing guide, security policy |
+| **Recognition** | Listed on olud.ai; selected for the XERJ Corpus Hub with attribution |
 
 ### 🔜 Remaining
 
@@ -293,7 +273,15 @@ flowchart LR
 
 ## 🛠️ Tech Stack
 
-`Python 3.14` · `sentence-transformers 5.1.2` · `FAISS` · `rank_bm25` · `Streamlit 1.64.0` · `PyMuPDF` · `pdfplumber`
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Streamlit-1.64.0-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/FAISS-Vector%20Search-0467DF?style=for-the-badge" alt="FAISS">
+  <img src="https://img.shields.io/badge/BM25-rank__bm25-555555?style=for-the-badge" alt="BM25">
+  <img src="https://img.shields.io/badge/SBERT-5.1.2-F59E0B?style=for-the-badge" alt="SBERT">
+  <img src="https://img.shields.io/badge/PyMuPDF-PDF%20Parsing-22C55E?style=for-the-badge" alt="PyMuPDF">
+  <img src="https://img.shields.io/badge/pdfplumber-PDF%20Parsing-8B5CF6?style=for-the-badge" alt="pdfplumber">
+</p>
 
 ---
 
@@ -401,6 +389,7 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 - [x] Failure analysis published
 - [x] Streamlit demo
 - [x] Senate documents ingested, chunked, and embedded (1,080 chunks)
+- [x] Listed on olud.ai and selected for the XERJ Corpus Hub
 - [ ] OCR (Tesseract) for the 2 scanned Senate PDFs
 - [ ] Larger, more varied evaluation set
 - [ ] Evaluation on the Senate corpus
@@ -426,25 +415,31 @@ python retrieval/embed.py --input data/processed/senate_chunks.jsonl --output da
 
 ---
 
+## 📈 Star History
+
+<p align="center">
+  <a href="https://star-history.com/#salikhussain71-code/PAKGOV-RAG-project&Date">
+    <img src="https://api.star-history.com/svg?repos=salikhussain71-code/PAKGOV-RAG-project&type=Date" alt="Star History Chart" width="600">
+  </a>
+</p>
+
+---
+
 ## 👤 Author
 
-<img src="https://github.com/salikhussain71-code.png" width="80" alt="Salik Hussain" align="left" style="border-radius:50%">
+<p align="center">
+  <img src="https://github.com/salikhussain71-code.png" width="90" alt="Salik Hussain" style="border-radius:50%">
+</p>
 
-**Salik Hussain**
-Research interest: **Urdu NLP and low-resource language AI**
+<p align="center">
+  <b>Salik Hussain</b><br>
+  Research interest: <b>Urdu NLP and low-resource language AI</b>
+</p>
 
-[
-
-![GitHub](https://img.shields.io/badge/GitHub-salikhussain71--code-181717?logo=github)
-
-](https://github.com/salikhussain71-code)
-[
-
-![Email](https://img.shields.io/badge/Email-salikhussain71%40gmail.com-D14836?logo=gmail&logoColor=white)
-
-](mailto:salikhussain71@gmail.com)
-
-<br clear="left"/>
+<p align="center">
+  <a href="https://github.com/salikhussain71-code"><img src="https://img.shields.io/badge/GitHub-salikhussain71--code-181717?style=for-the-badge&logo=github" alt="GitHub"></a>
+  <a href="mailto:salikhussain71@gmail.com"><img src="https://img.shields.io/badge/Email-salikhussain71%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
+</p>
 
 ## 📄 License
 
@@ -452,45 +447,10 @@ MIT License. Copyright (c) 2026 Salik Hussain. See [LICENSE](LICENSE).
 
 ---
 
-
-## 🏅 Open-Source Recognition
-
-<div align="center">
-
-| 🌐 Listed On | 🏆 Recognition | 
-|:---:|:---|
-| **olud.ai** | PAKGOV-RAG is listed in the olud.ai AI project directory. |
-| **XERJ Corpus Hub** | PAKGOV-RAG was selected for the indexed corpus hub, with attribution. |
-
-[
-
-![olud.ai](https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project)
-
-](https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html)
-
-
-![Listed](https://img.shields.io/badge/Directory-Listed%20on%20olud.ai-blueviolet?logo=starship&logoColor=white)
-
-
-
-
-![XERJ](https://img.shields.io/badge/XERJ%20Corpus%20Hub-Selected%20%7C%20Attributed-gold?logo=databricks&logoColor=white)
-
-
-
-
-![Open Source](https://img.shields.io/badge/Open%20Source-MIT-green?logo=opensourceinitiative&logoColor=white)
-
-
-
-</div>
-
-> 💬 *Independent platforms have indexed and credited this project, which makes it easier for other researchers to find and verify the work.*
-
----
-
 <div align="center">
 
 ⭐ If this project helps your research, please star the repo.
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,50:203a43,100:0f2027&height=120&section=footer" alt="footer" width="100%">
 
 </div>
