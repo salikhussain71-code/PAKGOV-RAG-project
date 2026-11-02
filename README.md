@@ -452,10 +452,40 @@ MIT License. Copyright (c) 2026 Salik Hussain. See [LICENSE](LICENSE).
 
 ---
 
-## Open-Source Recognition
 
-- **olud.ai:** PAKGOV-RAG listed in the AI project directory.
-- **XERJ Corpus Hub:** PAKGOV-RAG selected for the indexed corpus hub, with attribution.
+## 🏅 Open-Source Recognition
+
+<div align="center">
+
+| 🌐 Listed On | 🏆 Recognition | 
+|:---:|:---|
+| **olud.ai** | PAKGOV-RAG is listed in the olud.ai AI project directory. |
+| **XERJ Corpus Hub** | PAKGOV-RAG was selected for the indexed corpus hub, with attribution. |
+
+[
+
+![olud.ai](https://olud.ai/badge.php?tool=salikhussain71-code-pakgov-rag-project)
+
+](https://olud.ai/project/salikhussain71-code-pakgov-rag-project.html)
+
+
+![Listed](https://img.shields.io/badge/Directory-Listed%20on%20olud.ai-blueviolet?logo=starship&logoColor=white)
+
+
+
+
+![XERJ](https://img.shields.io/badge/XERJ%20Corpus%20Hub-Selected%20%7C%20Attributed-gold?logo=databricks&logoColor=white)
+
+
+
+
+![Open Source](https://img.shields.io/badge/Open%20Source-MIT-green?logo=opensourceinitiative&logoColor=white)
+
+
+
+</div>
+
+> 💬 *Independent platforms have indexed and credited this project, which makes it easier for other researchers to find and verify the work.*
 
 ---
 
