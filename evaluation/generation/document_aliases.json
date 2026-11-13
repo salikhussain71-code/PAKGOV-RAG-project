@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "rule": "Two names refer to the same document when they are listed under the same id. Names are compared after dropping any directory and the .pdf/.txt extension, lowercasing, and removing every character that is not a letter or a digit. There is no substring or prefix matching. A name that is not listed is unknown.",
+  "documents": {
+    "SRC-0001": {
+      "title": "The Constitution of the Islamic Republic of Pakistan",
+      "aliases": [
+        "PAKISTANCODE__Constitution_of_Pakistan__2026-09-26__EN__Under_Review.pdf",
+        "PAKISTANCODE__Constitution_of_Pakistan__2026-09-26__EN__Under_Review.txt"
+      ]
+    },
+    "SRC-0002": {
+      "title": "Pakistan Penal Code Act XLV of 1860",
+      "aliases": [
+        "PAKISTANCODE__Pakistan_Penal_Code_1860.pdf",
+        "PAKISTANCODE__Pakistan_Penal_Code_18602026-09-27EN_Under_Review.txt"
+      ]
+    },
+    "SRC-0003": {
+      "title": "Code of Criminal Procedure Act V of 1898",
+      "aliases": [
+        "PAKISTANCODE__Code_of_Criminal_Procedure_18982026-09-27EN_Under_Review.txt"
+      ]
+    },
+    "SRC-0004": {
+      "title": "Code of Civil Procedure Act V of 1908",
+      "aliases": [
+        "PAKISTANCODE__Code_of_Civil_Procedure_19082026-09-27EN_Under_Review.txt"
+      ]
+    },
+    "SRC-0005": {
+      "title": "Rules of Business 1973",
+      "aliases": [
+        "PAKISTANCODE__Rules_of_Business_19732026-09-27__EN__Under_Review.txt"
+      ]
+    },
+    "SRC-0006": {
+      "title": "ESTACODE Edition 2021",
+      "aliases": [
+        "PAKISTANCODE__ESTACODE_2021__2026-09-27__EN__Official.txt"
+      ]
+    }
+  }
+}

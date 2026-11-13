@@ -1,3 +1,8 @@
+# PREVIOUS EVALUATOR - kept unchanged so the historical 37/50 outputs stay reproducible.
+# It builds each answer from the reference answer (qa['answer']) and marks a question
+# "grounded" when a retrieved filename matches the gold source, so 37/50 is a
+# source-coverage check, not a measure of grounding (issue #1). Superseded by
+# app/eval/evaluate_grounded_v1.py; see docs/grounded-evaluation.md.
 import json, os
 
 rrf_path = "data/interim/hybrid_rrf_results_50.jsonl"
