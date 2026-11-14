@@ -36,7 +36,7 @@
   <img src="https://img.shields.io/badge/Eval%20Set-50%20questions-orange" alt="Eval">
   <img src="https://img.shields.io/badge/Hybrid%20RRF%20R%405-0.740-brightgreen" alt="R@5">
   <img src="https://img.shields.io/badge/Hybrid%20RRF%20MRR-0.605-brightgreen" alt="MRR">
-  <img src="https://img.shields.io/badge/Grounded%20Answers-74%25-success" alt="Grounded">
+  <img src="https://img.shields.io/badge/Grounded%20%28previous%20evaluator%29-74%25-lightgrey" alt="Grounded (previous evaluator)">
 </p>
 
 <!-- ROW 4: language + focus -->
@@ -84,7 +84,7 @@
 
 ## ⚡ At a Glance
 
-| 📚 Corpus | 🧪 Eval Set | 🎯 Best R@5 | 📈 Best MRR | ✅ Grounded | 🌐 Languages |
+| 📚 Corpus | 🧪 Eval Set | 🎯 Best R@5 | 📈 Best MRR | ✅ Grounded (previous evaluator) | 🌐 Languages |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | **6,711** chunks | **50** questions | **0.740** | **0.605** | **74%** | **3** (UR / EN / mixed) |
 
@@ -165,14 +165,16 @@ Hybrid  ███████████████░░░░░░░░░
 - At R@5 it is **10 points above BM25** and **12 points above dense retrieval**.
 - Dense retrieval beats BM25 at R@1, R@10 and MRR, but BM25 is slightly ahead at R@5 (0.640 vs 0.620).
 
-### 🛡️ Grounded answers (50 questions)
+### 🛡️ Grounded answers (50 questions, previous evaluator)
 
 | Outcome | Count | Share |
 |---|:---:|:---:|
 | Answer with `[Source: Constitution.pdf p.X]` citation | 37 | 74% |
 | `insufficient evidence` returned | 13 | 26% |
 
-The 13 refusals match the 13 questions where the gold source was **not** in the top 5, so the system declines instead of hallucinating.
+The 13 refusals match the 13 questions where the gold source was **not** in the top 5, by construction of the previous evaluator's rule.
+
+> **Previous evaluator.** These counts come from `app/eval/evaluate_grounded.py`, which builds each answer from the reference answer and marks a question as answered when a retrieved filename matches the gold source ([issue #1](https://github.com/salikhussain71-code/PAKGOV-RAG-project/issues/1)). They are kept unchanged for the record and are not a measure of grounding. The revised evaluator scores answer correctness, evidence support, citation accuracy and appropriate abstention separately; see [`docs/grounded-evaluation.md`](docs/grounded-evaluation.md).
 
 ### 🌐 Multilingual checks
 
@@ -221,7 +223,7 @@ Public deployment & paper    ░░░░░░░░░░░░░░░░░
 | 6 | **Hybrid retrieval** | Reciprocal Rank Fusion (k=60) combining BM25 and dense rankings |
 | 7 | **Evaluation set** | 50 questions (15 English, 15 Urdu, 20 mixed) with manually verified gold sources |
 | 8 | **Metrics** | Recall@1/3/5/10 and MRR for all three retrievers on the same set |
-| 9 | **Grounded answers** | Extractive answers with `[Source: …]` citations; 37 of 50 answered, 13 returned `insufficient evidence` |
+| 9 | **Grounded answers** | Extractive answers with `[Source: …]` citations; 37 of 50 answered, 13 returned `insufficient evidence` (previous evaluator, see `docs/grounded-evaluation.md`) |
 | 10 | **Failure analysis** | All 13 R@5 misses written up in `failure_analysis_50.md` |
 | 11 | **Urdu checks** | `urdu_unicode_report.json` plus a cross-lingual similarity check (0.8370) |
 | 12 | **Reproducibility** | Raw `.jsonl` results and `.json` metrics committed; `python app/eval/final_table.py` regenerates the table |
@@ -337,13 +339,13 @@ data/interim/
 ├── bm25_results_50.jsonl
 ├── dense_results_50.jsonl
 ├── hybrid_rrf_results_50.jsonl
-└── grounded_answers_50.jsonl
+└── grounded_answers_50.jsonl      (previous evaluator)
 
 evaluation/retrieval/
 ├── bm25_metrics_50.json
 ├── dense_metrics_50.json
 ├── hybrid_rrf_metrics_50.json
-├── grounded_metrics.json
+├── grounded_metrics.json          (previous evaluator)
 ├── failure_analysis_50.md
 ├── urdu_unicode_report.json
 └── FINAL_RESULTS.md
