@@ -30,6 +30,11 @@
   <img src="https://img.shields.io/github/languages/top/salikhussain71-code/PAKGOV-RAG-project" alt="Top Language">
 </p>
 
+<!-- ROW 2B: GitArena badge -->
+<p align="center">
+  <a href="https://gitarena.dev/u/salikhussain71-code"><img src="https://gitarena.dev/api/badge/salikhussain71-code?timeframe=total&theme=light&color=purple" alt="GitArena Stats"></a>
+</p>
+
 <!-- ROW 3: results -->
 <p align="center">
   <img src="https://img.shields.io/badge/Corpus-6%2C711%20chunks-blue" alt="Corpus">
