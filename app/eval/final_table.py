@@ -28,7 +28,7 @@ table = f"""# PAKGOV-RAG - Final Retrieval Results - 100% Verified
 - BM25 R@5 0.640 > Dense R@5 0.620 but Dense MRR 0.535 > BM25 0.469 - Dense ranks better
 - RRF Hybrid R@5 0.740 beats both by +10% - R@10 0.820
 - Failure at R@5: 13/50 (26%) - categorized in failure_analysis_50.md
-- Grounded generation: {grounded['grounded_cited']} cited ({grounded['grounded_rate']*100:.1f}%) + {grounded['insufficient']} insufficient (26.0%) - matches R@5
+- Grounded generation (previous evaluator, source-coverage check, not a grounding measure; see docs/grounded-evaluation.md): {grounded['grounded_cited']} cited ({grounded['grounded_rate']*100:.1f}%) + {grounded['insufficient']} insufficient (26.0%) - matches R@5 by construction
 
 ## Urdu Support Stage 138
 - Unicode NFC normalized: OK
@@ -40,7 +40,7 @@ table = f"""# PAKGOV-RAG - Final Retrieval Results - 100% Verified
 - data/interim/bm25_results_50.jsonl
 - data/interim/dense_results_50.jsonl
 - data/interim/hybrid_rrf_results_50.jsonl
-- data/interim/grounded_answers_50.jsonl
+- data/interim/grounded_answers_50.jsonl (previous evaluator)
 - evaluation/retrieval/*_metrics.json
 - evaluation/retrieval/failure_analysis_50.md
 - evaluation/retrieval/urdu_unicode_report.json
